@@ -16,3 +16,5 @@ RUN apt-get -y install tzdata
 
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install ros-galactic-desktop -y
+
+CMD bash -c "source /opt/ros/galactic/setup.sh"
