@@ -37,9 +37,9 @@ RUN apt-get install ros-galactic-desktop -y
 ```
 
 ## Building the Docker image
-You can change the tag `ros-galactic` to whatever you want. Its purpose is to give the image an easy to remember name.
+You can change the tag `user/ros-galactic` to whatever you want. Its purpose is to give the image an easy to remember name.
 ```
-$ docker build -t ros-galactic .
+$ docker build -t user/ros-galactic .
 ```
 
 ## Running commands in the container
@@ -57,7 +57,7 @@ $ xhost -local:*
 
 The command below will start a GUI-capable shell in the container:
 ```
-$ docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -it ros-galactic
+$ docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -it user/ros-galactic
 ```
 
 * `--rm` tells docker to delete the container after it exits (for testing purposes)
@@ -65,7 +65,7 @@ $ docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -it ros
 * `-v /tmp/.X11-unix/:/tmp/.X11-unix/` will forward the X11 socket as a mounted volume in the docker container.
 * `-i` makes an interactive session
 * `-t` makes a pseudo-TTY (terminal)
-* `ros-galactic` makes a container based on the `ros-galactic` image
+* `user/ros-galactic` makes a container based on the `user/ros-galactic` image
 
 ## Try some examples
 Open two shells in the docker image. In the first one, run:
