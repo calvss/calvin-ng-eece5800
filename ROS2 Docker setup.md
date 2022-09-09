@@ -57,15 +57,19 @@ $ xhost -local:*
 
 The command below will start a GUI-capable shell in the container:
 ```
-$ docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -it user/ros-galactic
+$ docker run --rm --net host --device /dev/dri/card0 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -it user/ros-galactic
 ```
 
 * `--rm` tells docker to delete the container after it exits (for testing purposes)
+* `--net host` use the host network directly. Allows ROS2 to connect.
+* `--device /dev/dri/card0` tells the container to use the GPU
 * `-e DISPLAY=$DISPLAY` will give the container the `$DISPLAY` environment variable for your existing X server
 * `-v /tmp/.X11-unix/:/tmp/.X11-unix/` will forward the X11 socket as a mounted volume in the docker container.
 * `-i` makes an interactive session
 * `-t` makes a pseudo-TTY (terminal)
 * `user/ros-galactic` makes a container based on the `user/ros-galactic` image
+
+**Note:** Only tested with Intel integrated grahpics. Graphical bugs may happen with other GPUs. I was unable to make it work with Nvidia Optimus.
 
 ## Try some examples
 Open two shells in the docker image. In the first one, run:
@@ -80,3 +84,5 @@ $ source /opt/ros/galactic/setup.bash
 $ ros2 run demo_nodes_py listener
 ```
 The `talker` should be publishing messages and the `listener` should be receiving the messages and printing it to the screen.
+
+**Note:** Always source when starting a new container.
