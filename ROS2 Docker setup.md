@@ -21,13 +21,17 @@ ENV LANG en_US.UTF-8
 ### Add the ROS package repository to `sources.list`
 ```
 RUN apt-get install curl gnupg lsb-release -y
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+    -o /usr/share/keyrings/ros-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
+    http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" \
+    | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 ```
 ### Installing ROS2 from the repository
 We have to set up `tzdata` first, since it has weird interactive shell stuff going on.
 ```
-RUN ln -snf /usr/share/zoneinfo/America/New_York /etc/localtime && echo America/New_York > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/America/New_York /etc/localtime \
+    && echo America/New_York > /etc/timezone
 RUN apt-get -y install tzdata
 ```
 Then install ROS2
@@ -57,7 +61,11 @@ $ xhost -local:*
 
 The command below will start a GUI-capable shell in the container:
 ```
-$ docker run --rm --net host --device /dev/dri/card0 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -it user/ros-galactic
+$ docker run --rm --net host \
+         --device /dev/dri/card0 \
+         -e DISPLAY=$DISPLAY \
+         -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
+         -it user/ros-galactic
 ```
 
 * `--rm` tells docker to delete the container after it exits (for testing purposes)
